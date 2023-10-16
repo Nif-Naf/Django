@@ -36,6 +36,7 @@ docker-compose exec django python manage.py test apps.storage.tests.test_stabili
 ```
 
 ### Что еще предстоит сделать?
-- Настроить: swager, poetry, flake-8, pre-commit.
+- Настроить: swager, flake-8, pre-commit.
 - До настроить healthchecker в docker-compose.
 - Dockerfile в образ лезут всякая херня. Необходимо настроить .dockerignore для Dockerfile. 
+- 
