@@ -3,7 +3,7 @@ Django
 sqlparse
 tzdata
 djangorestframework
-celery==5.3.4
-redis==5.0.0
+celery
+redis
 psycopg2
 requests
