@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "django_project"
+version = "0.1.0"
+description = "Simple django application."
+authors = ["Nikita Klopotvskiy"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.5"
+django = "^4.2.6"
+djangorestframework = "^3.14.0"
+celery = "^5.3.4"
+redis = "^5.0.1"
+psycopg2-binary = "^2.9.9"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+pre-commit = "^3.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
