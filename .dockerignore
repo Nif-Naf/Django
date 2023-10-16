@@ -16,3 +16,7 @@ __pycache__/
 
 # Readme
 README.md
+
+# Poetry
+poetry.lock
+pyproject.toml
