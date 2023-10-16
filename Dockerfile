@@ -8,7 +8,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 WORKDIR project
 # Копирует все файлы из нашего проекта в контейнер.
 COPY . $WORKDIR
-# Обновляем pip.
-RUN pip install --upgrade pip
-# Запускает команду pip install для всех библиотек, перечисленных в requirements.txt.
-RUN pip install -r requirements.txt
+# Обновляем pip и устанавливаем все зависимости.
+RUN pip install --upgrade pip &&  \
+    pip install -r requirements.txt
