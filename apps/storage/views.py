@@ -1,6 +1,5 @@
 import logging
 
-from drf_yasg.inspectors import PaginatorInspector
 from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.response import Response
