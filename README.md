@@ -36,5 +36,5 @@ docker-compose exec django python manage.py test apps.storage.tests.test_stabili
 ```
 
 ### Что еще предстоит сделать?
-- Настроить: swager, flake-8, pre-commit.
+- Настроить: flake-8, pre-commit.
 - До настроить healthchecker в docker-compose.

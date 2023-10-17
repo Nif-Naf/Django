@@ -3,6 +3,7 @@ Django
 sqlparse
 tzdata
 djangorestframework
+drf-yasg
 celery
 redis
 psycopg2
