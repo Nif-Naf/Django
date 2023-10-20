@@ -49,8 +49,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
-# # Database settings.
+# Database settings.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -59,6 +58,17 @@ DATABASES = {
         'PASSWORD': 'admin',
         'HOST': 'postgres',
         'PORT': 5432,
+    }
+}
+# Caches settings.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://localhost:6379',
+        'OPTIONS': {
+            'TIMEOUT': 600,
+            'MAX_ENTRIES': 100,
+        }
     }
 }
 # Logging settings.
