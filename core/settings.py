@@ -59,17 +59,42 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Authentication/authorization settings.
 AUTH_USER_MODEL = 'authorization.User'
 
-# # Database settings.
-DATABASES = {
+# Databases settings.
+LOCAL_TESTING_DATABASE = {                  # Local database for testing.
+    'testing': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+PROD_DATABASES = {                          # Remote production database.
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'main',
+        'NAME': 'production',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': 'postgres',
         'PORT': 5432,
-    }
+    },
+    **LOCAL_TESTING_DATABASE,
 }
+LOCAL_DATABASES = {                         # Remote copy of production database.
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': '220',
+    #     'USER': 'admin',
+    #     'PASSWORD': 'admin',
+    #     'HOST': 'postgres',
+    #     'PORT': 5432,
+    # },
+    # **LOCAL_TESTING_DATABASE,
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+DATABASES = LOCAL_DATABASES if DEBUG else PROD_DATABASES
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    # Default pk field type.
+
 # Logging settings.
 LOGGING = {
     'version': 1,
