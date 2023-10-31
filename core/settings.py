@@ -53,6 +53,7 @@ TEMPLATES = [
     },
 ]
 
+# WSGI settings.
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # Authentication/authorization settings.
@@ -122,6 +123,7 @@ LOGGING = {
 
     },
 }
+
 # DRF settings.
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -133,6 +135,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+
 # Celery settings.
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
@@ -140,10 +143,7 @@ CELERY_BROKER_CONNECTION_RETRY = 5
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = 5
 CELERY_TIMEZONE = 'Europe/Moscow'
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
+# Password validation.
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -159,25 +159,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'ru'
-
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+# Static files.
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
