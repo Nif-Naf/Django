@@ -55,6 +55,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# Authentication/authorization settings.
+AUTH_USER_MODEL = 'authorization.User'
 
 # # Database settings.
 DATABASES = {
