@@ -8,15 +8,21 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    # Встроенные модули Django.
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'drf_yasg',
-    'apps.storage',
+
+    # Сторонние модули.
+    'rest_framework',               # Django REST Framework.
+    'drf_yasg',                     # Документация для API.
+
+    # Модули приложения.
+    'apps.authorization',           # Авторизация, аутентификация и работа с пользователями.
+    'apps.storage',                 # Хранилище.
 ]
 
 MIDDLEWARE = [
