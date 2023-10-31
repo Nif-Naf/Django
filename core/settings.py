@@ -47,19 +47,48 @@ TEMPLATES = [
     },
 ]
 
+# WSGI settings.
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database settings.
-DATABASES = {
+# Authentication/authorization settings.
+AUTH_USER_MODEL = 'authorization.User'
+
+# Databases settings.
+LOCAL_TESTING_DATABASE = {                  # Local database for testing.
+    'testing': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+PROD_DATABASES = {                          # Remote production database.
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'main',
+        'NAME': 'production',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': 'postgres',
         'PORT': 5432,
-    }
+    },
+    **LOCAL_TESTING_DATABASE,
 }
+LOCAL_DATABASES = {                         # Remote copy of production database.
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': '220',
+    #     'USER': 'admin',
+    #     'PASSWORD': 'admin',
+    #     'HOST': 'postgres',
+    #     'PORT': 5432,
+    # },
+    # **LOCAL_TESTING_DATABASE,
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+DATABASES = LOCAL_DATABASES if DEBUG else PROD_DATABASES
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    # Default pk field type.
+
 # Caches settings.
 CACHES = {
     'default': {
@@ -71,6 +100,7 @@ CACHES = {
         }
     }
 }
+
 # Logging settings.
 LOGGING = {
     'version': 1,
@@ -124,6 +154,7 @@ LOGGING = {
 
     },
 }
+
 # DRF settings.
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -135,6 +166,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+
 # Celery settings.
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
@@ -142,10 +174,7 @@ CELERY_BROKER_CONNECTION_RETRY = 5
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = 5
 CELERY_TIMEZONE = 'Europe/Moscow'
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
+# Password validation.
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -161,25 +190,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'ru'
-
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+# Static files.
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
