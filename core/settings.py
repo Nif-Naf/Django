@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +60,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Authentication/authorization settings.
 AUTH_USER_MODEL = 'authorization.User'
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 # Databases settings.
 LOCAL_TESTING_DATABASE = {                  # Local database for testing.
