@@ -17,12 +17,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Сторонние модули.
-    'rest_framework',                       # Django REST Framework.
-    'drf_yasg',                             # Документация для API.
+    'rest_framework',                       # REST Framework.
+    'rest_framework_simplejwt',             # REST Framework auth.
+    'drf_yasg',                             # Documentation for API.
 
     # Модули приложения.
-    'apps.authorization',                   # Авторизация, аутентификация и работа с пользователями.
-    'apps.storage',                         # Хранилище.
+    'apps.authorization',                   # Custom auth module.
+    'apps.storage',                         # Storage for files.
 ]
 
 MIDDLEWARE = [
