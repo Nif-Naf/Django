@@ -37,7 +37,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -57,6 +56,11 @@ TEMPLATES = [
 
 # WSGI settings.
 WSGI_APPLICATION = 'core.wsgi.application'
+
+# Urls settings.
+ROOT_URLCONF = 'core.urls'
+API_BASE_URL = 'api/v1/'
+STATIC_URL = 'static/'
 
 # Authentication/authorization settings.
 AUTH_USER_MODEL = 'authorization.User'
@@ -210,6 +214,3 @@ LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
-
-# Static files.
-STATIC_URL = 'static/'
