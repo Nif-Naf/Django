@@ -38,6 +38,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True,
         max_length=255,
     )
+    # gender = models.CharField(
+    #     null=True,
+    #     choices=(('male', 'Мужской'), ('female', 'Женский')),
+    #     max_length=6,
+    # )
 
     #########################################
     # Сервисные поля.
@@ -60,4 +65,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     def __str__(self):
-        return f'User object. Username: {self.username}'
+        return f'{self.username}'
+
+    class Meta:
+        verbose_name = 'пользователя'
+        verbose_name_plural = 'пользователи'

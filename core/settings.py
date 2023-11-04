@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,12 +18,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Сторонние модули.
-    'rest_framework',                       # Django REST Framework.
-    'drf_yasg',                             # Документация для API.
+    'rest_framework',                       # REST Framework.
+    'rest_framework_simplejwt',             # REST Framework auth.
+    'drf_yasg',                             # Documentation for API.
 
     # Модули приложения.
-    'apps.authorization',                   # Авторизация, аутентификация и работа с пользователями.
-    'apps.storage',                         # Хранилище.
+    'apps.authorization',                   # Custom auth module.
 ]
 
 MIDDLEWARE = [
@@ -35,7 +36,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -56,14 +56,27 @@ TEMPLATES = [
 # WSGI settings.
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# Urls settings.
+ROOT_URLCONF = 'core.urls'
+API_BASE_URL = 'api/v1/'
+STATIC_URL = 'static/'
+
 # Authentication/authorization settings.
 AUTH_USER_MODEL = 'authorization.User'
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 # Databases settings.
 LOCAL_TESTING_DATABASE = {                  # Local database for testing.
     'testing': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'testing',
+        'USER': 'test',
+        'PASSWORD': 'test',
+        'HOST': 'postgres_for_tests',
+        'PORT': 5432,
     },
 }
 PROD_DATABASES = {                          # Remote production database.
@@ -75,7 +88,6 @@ PROD_DATABASES = {                          # Remote production database.
         'HOST': 'postgres',
         'PORT': 5432,
     },
-    **LOCAL_TESTING_DATABASE,
 }
 LOCAL_DATABASES = {                         # Remote copy of production database.
     # 'default': {
@@ -86,11 +98,11 @@ LOCAL_DATABASES = {                         # Remote copy of production database
     #     'HOST': 'postgres',
     #     'PORT': 5432,
     # },
-    # **LOCAL_TESTING_DATABASE,
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
+    **LOCAL_TESTING_DATABASE,
 }
 DATABASES = LOCAL_DATABASES if DEBUG else PROD_DATABASES
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    # Default pk field type.
@@ -163,12 +175,13 @@ LOGGING = {
 
 # DRF settings.
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+      'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.JSONParser',
     ]
 }
@@ -201,6 +214,3 @@ LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
-
-# Static files.
-STATIC_URL = 'static/'
