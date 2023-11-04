@@ -3,6 +3,8 @@ Django
 sqlparse
 tzdata
 djangorestframework
+djangorestframework-simplejwt
+pyjwt
 drf-yasg
 celery
 redis
