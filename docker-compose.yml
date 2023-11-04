@@ -7,13 +7,7 @@ services:
     image: custom_django
     container_name: django
     hostname: django
-#    volumes:
-#      - .:/project
-    command: sh -c "
-      python manage.py makemigrations storage &&
-      python manage.py migrate && 
-      python manage.py runserver 0.0.0.0:8000 
-      "
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     healthcheck:
@@ -22,44 +16,26 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    depends_on:
-      postgres:
-        condition: service_healthy
-#      storage_regular_worker:
-#        condition: service_healthy
-
-  # Клиент для основной базы данных.
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    hostname: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_PORT_OUT: 5555
-    ports:
-      - "80:80"
-    depends_on:
-      postgres:
-        condition: service_healthy
     restart: always
+    depends_on:
+      postgres_for_tests:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
-  # База данных.
-  postgres:
+  # Локальная базы данных для тестов.
+  postgres_for_tests:
     image: postgres:latest
-    container_name: postgres
-    hostname: postgres
+    container_name: postgres_for_tests
+    hostname: postgres_for_tests
     environment:
-      POSTGRES_DB: main
+      POSTGRES_DB: testing
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-#    volumes:
-#      - ./postgresql/dumps:/project/dumps
-#      - ./postgresql/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin -d main" ]
+      test: [ "CMD-SHELL", "pg_isready -U admin -d testing" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -73,7 +49,7 @@ services:
     hostname: redis
     command: redis-server --save 20 1 --loglevel warning
     ports:
-      - '6379:6379'
+      - "6379:6379"
     healthcheck:
       test: [ "CMD-SHELL", "redis-cli ping" ]
       interval: 10s
