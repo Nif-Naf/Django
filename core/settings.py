@@ -71,8 +71,12 @@ SIMPLE_JWT = {
 # Databases settings.
 LOCAL_TESTING_DATABASE = {                  # Local database for testing.
     'testing': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'testing',
+        'USER': 'test',
+        'PASSWORD': 'test',
+        'HOST': 'postgres_for_tests',
+        'PORT': 5432,
     },
 }
 PROD_DATABASES = {                          # Remote production database.
@@ -84,7 +88,6 @@ PROD_DATABASES = {                          # Remote production database.
         'HOST': 'postgres',
         'PORT': 5432,
     },
-    **LOCAL_TESTING_DATABASE,
 }
 LOCAL_DATABASES = {                         # Remote copy of production database.
     # 'default': {
@@ -95,11 +98,11 @@ LOCAL_DATABASES = {                         # Remote copy of production database
     #     'HOST': 'postgres',
     #     'PORT': 5432,
     # },
-    # **LOCAL_TESTING_DATABASE,
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
+    **LOCAL_TESTING_DATABASE,
 }
 DATABASES = LOCAL_DATABASES if DEBUG else PROD_DATABASES
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    # Default pk field type.
@@ -179,8 +182,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.JSONParser',
     ]
 }
