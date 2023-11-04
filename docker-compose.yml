@@ -81,14 +81,3 @@ services:
       retries: 3
       start_period: 10s
     restart: always
-
-  storage_regular_worker:
-    build: .
-    image: custom_storage_regular_worker
-    container_name: storage_regular_worker
-    hostname: storage_regular_worker
-    command: celery -A apps.storage.workers.regular worker -l info
-    depends_on:
-      redis:
-        condition: service_healthy
-    restart: always

@@ -24,7 +24,6 @@ INSTALLED_APPS = [
 
     # Модули приложения.
     'apps.authorization',                   # Custom auth module.
-    'apps.storage',                         # Storage for files.
 ]
 
 MIDDLEWARE = [
