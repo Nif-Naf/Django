@@ -66,9 +66,12 @@ repos:
              # S101 Use of assert detected
          ]
 
-#      # Запуск тестов.
+      # Запуск тестов.
 #      - id: tests
-#        name: Run tests
-#        entry: "bash tests.sh"
-#        language: system
+#        name: tests
+#        entry: docker-compose exec -T drf python manage.py test
+#          apps.authorization
+#        always_run: true
+#        pass_filenames: false
+#        language: python
 #        verbose: true
