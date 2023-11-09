@@ -1,8 +1,5 @@
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    PermissionsMixin,
-)
 
 from apps.authorization.models.manager import UserManager
 
@@ -10,8 +7,8 @@ from apps.authorization.models.manager import UserManager
 class User(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя."""
 
-    REQUIRED_FIELDS = ['username']
-    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ["username"]
+    USERNAME_FIELD = "email"
     objects = UserManager()
 
     ##########################################
@@ -49,24 +46,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     #########################################
     is_active = models.BooleanField(
         default=True,
-        help_text='Активная ли учетная запись.',
+        help_text="Активная ли учетная запись.",
     )
     is_staff = models.BooleanField(
         default=False,
-        help_text='Может ли получить доступ к административной панели.',
+        help_text="Может ли получить доступ к административной панели.",
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
-        help_text='Дата создания пользователя.',
+        help_text="Дата создания пользователя.",
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-        help_text='Последнее обновление пользователя.',
+        help_text="Последнее обновление пользователя.",
     )
 
     def __str__(self):
-        return f'{self.username}'
+        return f"{self.username}"
 
     class Meta:
-        verbose_name = 'пользователя'
-        verbose_name_plural = 'пользователи'
+        verbose_name = "пользователя"
+        verbose_name_plural = "пользователи"

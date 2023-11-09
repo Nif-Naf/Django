@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 
 from apps.authorization.models import User
@@ -52,7 +52,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        exclude = '__all__'
+        exclude = "__all__"
 
 
 class UserAdmin(BaseUserAdmin):
@@ -66,47 +66,62 @@ class UserAdmin(BaseUserAdmin):
         "email",
         "is_superuser",
     ]
-    list_filter = ["is_superuser", ]
+    list_filter = [
+        "is_superuser",
+    ]
     fieldsets = [
-        ("Системные данные", {
-            "fields": [
-                "username",
-                "email",
-                "password",
-            ]
-        }),
-        ("Персональные данные", {
-            "fields": [
-                "first_name",
-                "last_name",
-            ]
-        }),
-        ("Права", {
-            "fields": [
-                "is_superuser",
-                "user_permissions",
-            ]
-        }),
+        (
+            "Системные данные",
+            {
+                "fields": [
+                    "username",
+                    "email",
+                    "password",
+                ],
+            },
+        ),
+        (
+            "Персональные данные",
+            {
+                "fields": [
+                    "first_name",
+                    "last_name",
+                ],
+            },
+        ),
+        (
+            "Права",
+            {
+                "fields": [
+                    "is_superuser",
+                    "user_permissions",
+                ],
+            },
+        ),
     ]
     add_fieldsets = [
-        ("Обязательные поля",
-         {
-             "classes": ["wide"],
-             "fields": [
-                 "username",
-                 "email",
-                 "password1",
-                 "password2",
-             ],
-         }),
-        ("Опциональные поля",
-         {
-             "classes": ["wide"],
-             "fields": [
-                 "first_name",
-                 "last_name",
-             ],
-         }),
+        (
+            "Обязательные поля",
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                ],
+            },
+        ),
+        (
+            "Опциональные поля",
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "first_name",
+                    "last_name",
+                ],
+            },
+        ),
     ]
     search_fields = ["username", "email", "first_name"]
     ordering = ["username"]

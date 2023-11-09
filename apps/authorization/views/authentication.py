@@ -16,22 +16,25 @@ logger = logging.getLogger(__name__)
 
 class SignInView(TokenObtainPairView):
     """Вход в систему."""
-    permission_classes = (AllowAny, )
+
+    permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
-        operation_summary='Аутентификация.',
-        operation_description='Вход в систему.',
-        tags=['authentication', ],
+        operation_summary="Аутентификация.",
+        operation_description="Вход в систему.",
+        tags=[
+            "authentication",
+        ],
         responses={
             status.HTTP_200_OK: openapi.Response(
-                description='Успешное получение токена.',
+                description="Успешное получение токена.",
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
-                description='Ошибка при валидации.',
+                description="Ошибка при валидации.",
             ),
-        }
+        },
     )
-    def post(self, request: Request, *args, **kwargs) -> Response:
+    def post(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -40,39 +43,42 @@ class SignInView(TokenObtainPairView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={
-                    'data': None,
-                    'error': str(e),
-                    'description': 'You are not authorized.',
+                    "data": None,
+                    "error": str(e),
+                    "description": "You are not authorized.",
                 },
             )
         return Response(
             status=status.HTTP_200_OK,
             data={
-                'data': serializer.validated_data,
-                'errors': None,
-                'description': 'You are authorized.',
+                "data": serializer.validated_data,
+                "errors": None,
+                "description": "You are authorized.",
             },
         )
 
 
 class UpdateSignInView(TokenRefreshView):
     """Обновляет доступ к системе."""
-    permission_classes = (AllowAny, )
+
+    permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
-        operation_summary='Аутентификация.',
-        operation_description='Обновление токена.',
-        tags=['authentication', ],
+        operation_summary="Аутентификация.",
+        operation_description="Обновление токена.",
+        tags=[
+            "authentication",
+        ],
         responses={
             status.HTTP_200_OK: openapi.Response(
-                description='Успешное обновление токена доступа.',
+                description="Успешное обновление токена доступа.",
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
-                description='Ошибка при валидации.',
+                description="Ошибка при валидации.",
             ),
-        }
+        },
     )
-    def post(self, request: Request, *args, **kwargs) -> Response:
+    def post(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -81,16 +87,16 @@ class UpdateSignInView(TokenRefreshView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={
-                    'data': None,
-                    'error': str(e),
-                    'description': 'You have not updated your access token.',
+                    "data": None,
+                    "error": str(e),
+                    "description": "You have not updated your access token.",
                 },
             )
         return Response(
             status=status.HTTP_200_OK,
             data={
-                'data': serializer.validated_data,
-                'errors': None,
-                'description': 'You have updated your access token.',
+                "data": serializer.validated_data,
+                "errors": None,
+                "description": "You have updated your access token.",
             },
         )
