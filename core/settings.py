@@ -1,11 +1,18 @@
+import os
 from datetime import timedelta
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = None
-DEBUG = True
+from dotenv import load_dotenv
 
-ALLOWED_HOSTS = []
+env_conf = load_dotenv()
+if not env_conf:
+    raise FileNotFoundError("File .env not found.")
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG")
+
+ALLOWED_HOSTS = list(os.getenv("ALLOWED_HOSTS"))
 
 
 INSTALLED_APPS = [
@@ -60,10 +67,13 @@ API_BASE_URL = "api/v1/"
 STATIC_URL = "static/"
 
 # Authentication/authorization settings.
+ACCESS_TOKEN_LIFETIME = int(os.getenv("LIFETIME_ACCESS"))
+REFRESH_TOKEN_LIFETIME = int(os.getenv("LIFETIME_REFRESH"))
+
 AUTH_USER_MODEL = "authorization.User"
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=ACCESS_TOKEN_LIFETIME),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=REFRESH_TOKEN_LIFETIME),
 }
 
 # Databases settings.
@@ -80,21 +90,21 @@ LOCAL_TESTING_DATABASE = {  # Local database for testing.
 PROD_DATABASES = {  # Remote production database.
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "production",
-        "USER": "admin",
-        "PASSWORD": "admin",
-        "HOST": "postgres",
-        "PORT": 5432,
+        "NAME": os.getenv("PROD_DATABASE_NAME"),
+        "USER": os.getenv("PROD_DATABASE_USER"),
+        "PASSWORD": os.getenv("PROD_DATABASE_PASSWORD"),
+        "HOST": os.getenv("PROD_DATABASE_HOST"),
+        "PORT": int(os.getenv("PROD_DATABASE_PORT")),
     },
 }
-LOCAL_DATABASES = {  # Remote copy of production database.
+DEVELOPMENT_DATABASES = {  # Remote copy of production database.
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': '220',
-    #     'USER': 'admin',
-    #     'PASSWORD': 'admin',
-    #     'HOST': 'postgres',
-    #     'PORT': 5432,
+    #     "NAME": os.getenv("DEVELOPMENT_DATABASE_NAME"),
+    #     "USER": os.getenv("DEVELOPMENT_DATABASE_USER"),
+    #     "PASSWORD": os.getenv("DEVELOPMENT_DATABASE_PASSWORD"),
+    #     "HOST": os.getenv("DEVELOPMENT_DATABASE_HOST"),
+    #     "PORT": int(os.getenv("DEVELOPMENT_DATABASE_PORT")),
     # },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -102,14 +112,14 @@ LOCAL_DATABASES = {  # Remote copy of production database.
     },
     **LOCAL_TESTING_DATABASE,
 }
-DATABASES = LOCAL_DATABASES if DEBUG else PROD_DATABASES
+DATABASES = DEVELOPMENT_DATABASES if DEBUG else PROD_DATABASES
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"  # Default pk field type.
 
 # Caches settings.
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://localhost:6379",
+        "LOCATION": os.getenv("LOCATION_CACHE"),
         "OPTIONS": {
             "TIMEOUT": 600,
             "MAX_ENTRIES": 100,
@@ -183,8 +193,8 @@ REST_FRAMEWORK = {
 }
 
 # Celery settings.
-CELERY_BROKER_URL = "redis://redis:6379/0"
-CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_BROKER_CONNECTION_RETRY = 5
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = 5
 CELERY_TIMEZONE = "Europe/Moscow"
