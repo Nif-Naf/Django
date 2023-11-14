@@ -69,9 +69,7 @@ STATIC_URL = "static/"
 # CSRF
 CSRF_USE_SESSIONS = False
 # CSRF_COOKIE_AGE = 604800  # 604800 - one week
-CSRF_COOKIE_NAME = "csrftoken"
 CSRF_HEADERS_NAME = "X-CSRFToken"
-
 
 # Authentication/authorization settings.
 ACCESS_TOKEN_LIFETIME = int(os.getenv("LIFETIME_ACCESS"))
@@ -104,8 +102,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
     # custom
-    "AUTH_COOKIE": "access_token",
-    "AUTH_COOKIE_REFRESH": "refresh_token",
     "AUTH_COOKIE_DOMAIN": None,
     "AUTH_COOKIE_SECURE": False,
     "AUTH_COOKIE_HTTP_ONLY": True,
@@ -185,12 +181,26 @@ LOGGING = {
                 "%(message)s"
             ),
         },
+        "testing": {
+            "format": (
+                "%(asctime)s | "
+                "Module: %(module)s | "
+                "Func: %(funcName)s | "
+                "Line: %(lineno)d | "
+                "%(message)s"
+            ),
+        },
     },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
             "formatter": "base",
+        },
+        "console_testing": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "testing",
         },
         "console_short": {
             "class": "logging.StreamHandler",
@@ -207,6 +217,11 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
             "level": "INFO",
+        },
+        "testing": {
+            "handlers": ["console_testing"],
+            "propagate": False,
+            "level": "DEBUG",
         },
         "app": {
             "handlers": ["console"],
