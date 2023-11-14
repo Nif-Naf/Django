@@ -66,12 +66,10 @@ repos:
              # S101 Use of assert detected
          ]
 
-      # Запуск тестов.
-#      - id: tests
-#        name: tests
-#        entry: docker-compose exec -T drf python manage.py test
-#          apps.authorization
-#        always_run: true
-#        pass_filenames: false
-#        language: python
-#        verbose: true
+      # Запуск тестов. Если запущенно локально, то тесты запускаются локально.
+      # Если запуск был через докер. То тесты будут запускаться в контейнере
+      # проекта.
+      - id: tests
+        name: tests
+        entry: hooks/test_hook.sh
+        language: script
