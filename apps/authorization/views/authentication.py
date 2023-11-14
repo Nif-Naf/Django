@@ -1,5 +1,9 @@
+from __future__ import annotations
+
 import logging
 
+from django.conf import settings
+from django.middleware import csrf
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -10,6 +14,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+
+from apps.authorization.business.authentication import JWTResponse
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +40,16 @@ class SignInView(TokenObtainPairView):
             ),
         },
     )
-    def post(self, request: Request) -> Response:
+    def post(self, request: Request) -> Response | JWTResponse:
+        """Получение всех необходимых токенов для авторизации.
+
+        Args:
+            request.data.email (str): Электронная почта.
+            request.data.password (str): Пароль пользователя.
+
+        Returns:
+            В cookies access_token, refresh_token, csrf_token.
+        """
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -48,14 +63,21 @@ class SignInView(TokenObtainPairView):
                     "description": "You are not authorized.",
                 },
             )
-        return Response(
+        csrf_token = csrf.get_token(request)
+        access_token = serializer.validated_data["access"]
+        refresh_token = serializer.validated_data["refresh"]
+        response = JWTResponse(
             status=status.HTTP_200_OK,
             data={
-                "data": serializer.validated_data,
+                "data": None,
                 "errors": None,
                 "description": "You are authorized.",
             },
         )
+        response.add_to_cookie_csrf_token(csrf_token)
+        response.add_to_cookie_access_token(access_token)
+        response.add_to_cookie_refresh_token(refresh_token)
+        return response
 
 
 class UpdateSignInView(TokenRefreshView):
@@ -78,7 +100,15 @@ class UpdateSignInView(TokenRefreshView):
             ),
         },
     )
-    def post(self, request: Request) -> Response:
+    def post(self, request: Request) -> Response | JWTResponse:
+        """Обновление access_token для возобновления доступа к системе.
+
+        Args:
+            request.COOKIE.refresh_token (str): Токен обновления.
+
+        Returns:
+            В cookies новый access_token.
+        """
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -92,11 +122,17 @@ class UpdateSignInView(TokenRefreshView):
                     "description": "You have not updated your access token.",
                 },
             )
-        return Response(
+        access_token = serializer.validated_data["access"]
+        response = JWTResponse(
             status=status.HTTP_200_OK,
             data={
-                "data": serializer.validated_data,
+                "data": None,
                 "errors": None,
-                "description": "You have updated your access token.",
+                "description": "You have updated your access system.",
             },
         )
+        response.add_to_cookie_access_token(access_token)
+        if settings.SIMPLE_JWT["ROTATE_REFRESH_TOKENS"]:
+            refresh_token = serializer.validated_data["refresh"]
+            response.add_to_cookie_refresh_token(refresh_token)
+        return response

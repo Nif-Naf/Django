@@ -45,7 +45,9 @@ repos:
          language: system
          types: [python]
          args: [
-             "--ignore=E203,W503,FI10,FI11,FI12,FI13,FI14,FI15,FI16,FI17,FI58,PT013,ANN001,ANN003,ANN101,FI18,ANN201,ANN204,TAE001,E800",
+             "--ignore=E203,W503,FI10,FI11,FI12,FI13,FI14,FI15,FI16,FI17,FI58,
+             PT013,ANN001,ANN003,ANN101,FI18,ANN201,ANN204,TAE001,E800,S106,
+             T003, PT009, PT027",
              # black
                  # E203 whitespace before ':'
                  # W503 line break before binary operator
@@ -66,12 +68,10 @@ repos:
              # S101 Use of assert detected
          ]
 
-      # Запуск тестов.
-#      - id: tests
-#        name: tests
-#        entry: docker-compose exec -T drf python manage.py test
-#          apps.authorization
-#        always_run: true
-#        pass_filenames: false
-#        language: python
-#        verbose: true
+      # Запуск тестов. Если запущенно локально, то тесты запускаются локально.
+      # Если запуск был через докер. То тесты будут запускаться в контейнере
+      # проекта.
+      - id: tests
+        name: tests
+        entry: hooks/test_hook.sh
+        language: script

@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = list(os.getenv("ALLOWED_HOSTS"))
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
@@ -66,15 +66,50 @@ ROOT_URLCONF = "core.urls"
 API_BASE_URL = "api/v1/"
 STATIC_URL = "static/"
 
+# CSRF
+CSRF_USE_SESSIONS = False
+# CSRF_COOKIE_AGE = 604800  # 604800 - one week
+CSRF_HEADERS_NAME = "X-CSRFToken"
+
 # Authentication/authorization settings.
 ACCESS_TOKEN_LIFETIME = int(os.getenv("LIFETIME_ACCESS"))
 REFRESH_TOKEN_LIFETIME = int(os.getenv("LIFETIME_REFRESH"))
+JWT_AUTH = "rest_framework_simplejwt.authentication."
 
 AUTH_USER_MODEL = "authorization.User"
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=ACCESS_TOKEN_LIFETIME),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=REFRESH_TOKEN_LIFETIME),
+    # Одноразовый ли refresh_token.
+    "ROTATE_REFRESH_TOKENS": False,
+    # Добавлять ли одноразовый refresh_token в черный список.
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
+    "ALGORITHM": "HS256",  # для RSA: RS256, RS384 или RS512
+    "SIGNING_KEY": SECRET_KEY,  # в RSA это приватный ключ
+    "VERIFYING_KEY": None,  # в RSA это публичный ключ
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": JWT_AUTH + "default_user_authentication_rule",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    # custom
+    "AUTH_COOKIE_DOMAIN": None,
+    "AUTH_COOKIE_SECURE": False,
+    "AUTH_COOKIE_HTTP_ONLY": True,
+    "AUTH_COOKIE_PATH": "/",  # The path of the auth cookie.
+    "AUTH_COOKIE_SAME_SITE": "Lax",
 }
+if SIMPLE_JWT['BLACKLIST_AFTER_ROTATION']:
+    INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")
 
 # Databases settings.
 LOCAL_TESTING_DATABASE = {  # Local database for testing.
@@ -148,12 +183,26 @@ LOGGING = {
                 "%(message)s"
             ),
         },
+        "testing": {
+            "format": (
+                "%(asctime)s | "
+                "Module: %(module)s | "
+                "Func: %(funcName)s | "
+                "Line: %(lineno)d | "
+                "%(message)s"
+            ),
+        },
     },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
             "formatter": "base",
+        },
+        "console_testing": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "testing",
         },
         "console_short": {
             "class": "logging.StreamHandler",
@@ -170,6 +219,11 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
             "level": "INFO",
+        },
+        "testing": {
+            "handlers": ["console_testing"],
+            "propagate": False,
+            "level": "DEBUG",
         },
         "app": {
             "handlers": ["console"],

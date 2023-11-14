@@ -10,3 +10,4 @@ celery
 redis
 psycopg2
 requests
+python-dotenv

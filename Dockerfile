@@ -9,5 +9,5 @@ WORKDIR project
 # Копирует все файлы из нашего проекта в контейнер.
 COPY . $WORKDIR
 # Обновляем pip и устанавливаем все зависимости.
-RUN pip install --upgrade pip &&  \
+RUN pip install --upgrade pip && \
     pip install -r requirements.txt
