@@ -108,6 +108,8 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_PATH": "/",  # The path of the auth cookie.
     "AUTH_COOKIE_SAME_SITE": "Lax",
 }
+if SIMPLE_JWT['BLACKLIST_AFTER_ROTATION']:
+    INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")
 
 # Databases settings.
 LOCAL_TESTING_DATABASE = {  # Local database for testing.
