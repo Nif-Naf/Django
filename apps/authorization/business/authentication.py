@@ -7,11 +7,11 @@ from rest_framework.response import Response
 class JWTResponse(Response):
     """Ответ созданный специально для JWT Auth."""
 
-    __CSRF_COOKIE_NAME = settings.CSRF_COOKIE_NAME
+    __CSRF_COOKIE_NAME = "csrf"
     __CSRF_TOKEN = settings.SECRET_KEY
-    __ACCESS_KEY = settings.SIMPLE_JWT["AUTH_COOKIE"]
+    __ACCESS_KEY = "access"
     __ACCESS_EXPIRATION = settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"]
-    __REFRESH_KEY = settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"]
+    __REFRESH_KEY = "refresh"
     __REFRESH_EXPIRATION = settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"]
     __SECURE = settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"]
     __HTTP_ONLY = settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"]

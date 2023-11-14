@@ -36,9 +36,6 @@ class SignUpAPIView(APIView):
             status.HTTP_409_CONFLICT: openapi.Response(
                 description="Конфликт при создание нового пользователя.",
             ),
-            status.HTTP_500_INTERNAL_SERVER_ERROR: openapi.Response(
-                description="Пользователь не создан. Неизвестная ошибка.",
-            ),
         },
     )
     def post(self, request: Request):

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 
+from django.conf import settings
 from django.middleware import csrf
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -40,6 +41,15 @@ class SignInView(TokenObtainPairView):
         },
     )
     def post(self, request: Request) -> Response | JWTResponse:
+        """Получение всех необходимых токенов для авторизации.
+
+        Args:
+            request.data.email (str): Электронная почта.
+            request.data.password (str): Пароль пользователя.
+
+        Returns:
+            В cookies access_token, refresh_token, csrf_token.
+        """
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -91,6 +101,14 @@ class UpdateSignInView(TokenRefreshView):
         },
     )
     def post(self, request: Request) -> Response | JWTResponse:
+        """Обновление access_token для возобновления доступа к системе.
+
+        Args:
+            request.COOKIE.refresh_token (str): Токен обновления.
+
+        Returns:
+            В cookies новый access_token.
+        """
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -110,8 +128,11 @@ class UpdateSignInView(TokenRefreshView):
             data={
                 "data": None,
                 "errors": None,
-                "description": "You have updated your access token.",
+                "description": "You have updated your access system.",
             },
         )
         response.add_to_cookie_access_token(access_token)
+        if settings.SIMPLE_JWT["ROTATE_REFRESH_TOKENS"]:
+            refresh_token = serializer.validated_data["refresh"]
+            response.add_to_cookie_refresh_token(refresh_token)
         return response
