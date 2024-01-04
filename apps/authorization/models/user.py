@@ -16,13 +16,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Системно важные поля.
     ##########################################
     username = models.CharField(
-        db_index=True,
-        max_length=255,
         unique=True,
+        max_length=20,
+        verbose_name="Псевдоним",
     )
     email = models.EmailField(
-        db_index=True,
         unique=True,
+        verbose_name="Электронная почта",
+    )
+    is_verified_email = models.BooleanField(
+        default=False,
+        verbose_name="Верифицирована ли почта",
+        help_text="Если почта подтверждена, то пользователю будут доступны "
+        "некоторые дополнительные функции.",
     )
 
     #########################################
@@ -30,36 +36,44 @@ class User(AbstractBaseUser, PermissionsMixin):
     #########################################
     first_name = models.CharField(
         null=True,
+        blank=True,
         max_length=255,
+        verbose_name="Имя",
     )
     last_name = models.CharField(
         null=True,
+        blank=True,
         max_length=255,
+        verbose_name="Фамилия",
     )
-    # gender = models.CharField(
-    #     null=True,
-    #     choices=(('male', 'Мужской'), ('female', 'Женский')),
-    #     max_length=6,
-    # )
+    gender = models.CharField(
+        null=True,
+        blank=True,
+        max_length=6,
+        choices=(("male", "Мужской"), ("female", "Женский")),
+        verbose_name="Пол",
+    )
 
     #########################################
     # Сервисные поля.
     #########################################
     is_active = models.BooleanField(
         default=True,
-        help_text="Активная ли учетная запись.",
+        verbose_name="Активная ли учетная запись",
     )
     is_staff = models.BooleanField(
         default=False,
-        help_text="Может ли получить доступ к административной панели.",
+        verbose_name="Сотрудник",
+        help_text="Может ли получить доступ к административной панели",
+        db_comment="Может ли получить доступ к административной панели",
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
-        help_text="Дата создания пользователя.",
+        verbose_name="Дата создания пользователя",
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-        help_text="Последнее обновление пользователя.",
+        verbose_name="Последнее обновление пользователя",
     )
 
     def __str__(self):
