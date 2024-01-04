@@ -1,0 +1,48 @@
+[flake8]
+max-line-length = 79
+per-file-ignores =
+    # S101 Use of assert detected
+    tests/*.py:S101
+ignore =
+    # E203 whitespace before ':'
+    E203,
+    # W503 line break before binary operator
+    W503,
+    # FI10 __future__ import "division" missing
+    FI10,
+    # FI11 __future__ import "absolute_import" missing
+    FI11,
+    # FI12 __future__ import "with_statement" missing
+    FI12,
+    # FI13 __future__ import "print_function" missing
+    FI13,
+    # FI14 __future__ import "unicode_literals" missing
+    FI14,
+    # FI15 __future__ import "generator_stop" missing
+    FI15,
+    # FI16 __future__ import "nested_scopes" missing
+    FI16,
+    # FI17 __future__ import "generators" missing
+    FI17,
+    # FI58 __future__ import "annotations" present
+    FI58,
+    # PT013 found incorrect import of pytest, use simple 'import pytest' instead
+    PT013,
+    ANN001,
+    ANN003,
+    ANN101,
+    FI18,
+    ANN201,
+    ANN204,
+    TAE001,
+    E800,
+    S106,
+    T003,
+    PT009,
+    PT027
+exclude =
+    */migrations/*,
+    __pycache__,
+    .json,
+    .git,
+    .yaml
