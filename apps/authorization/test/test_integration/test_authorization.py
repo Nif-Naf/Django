@@ -24,8 +24,9 @@ ERRORS = {
     "authorization_with_non_unique_email": "User authorization with non "
     "unique field: email.",
     "not_authenticated": "User not authenticated.",
-    "authenticated_with_wrong_email": "User authenticated with wrong email.",
-    "authenticated_without_email": "User authenticated without email.",
+    "authenticated_with_wrong_username": "User authenticated with wrong"
+    " username",
+    "authenticated_without_email": "User authenticated without username.",
     "authenticated_with_wrong_password": "User authenticated with wrong "
     "password.",
     "authenticated_without_password": "User authenticated without password.",
@@ -65,7 +66,7 @@ class SuccessAuthTestCase(APITestCase):
 
         # Authenticated.
         path = BASE_URL + "sign_in"
-        param = {"email": USER["email"], "password": USER["password"]}
+        param = {"username": USER["username"], "password": USER["password"]}
         logger.debug("Request. Url: %s, Params: %s", path, param)
         response = self.client.post(path=path, data=param, format="json")
         status, data = response.status_code, response.data
@@ -300,11 +301,11 @@ class NotAuthenticationTestCase(APITestCase):
         """Create user."""
         User.objects.create_user(**USER)
 
-    def test_attempt_auth_with_wrong_email(self):
-        """Attempt authenticated user with wrong email."""
+    def test_attempt_auth_with_wrong_username(self):
+        """Attempt authenticated user with wrong username."""
         logger.debug("Start test: test_attempt_auth_with_wrong_email.")
         path = BASE_URL + "sign_in"
-        param = {"email": "Someemail@yande.ru", "password": USER["password"]}
+        param = {"username": "Some_username", "password": USER["password"]}
         logger.debug("Request. Url: %s, Params: %s", path, param)
         response = self.client.post(path=path, data=param, format="json")
         status, data = response.status_code, response.data
@@ -313,11 +314,11 @@ class NotAuthenticationTestCase(APITestCase):
         self.assertEqual(
             status,
             HTTP_400_BAD_REQUEST,
-            ERRORS["authenticated_with_wrong_email"],
+            ERRORS["authenticated_with_wrong_username"],
         )
 
-    def test_attempt_auth_without_email(self):
-        """Attempt authenticated user without req field: email."""
+    def test_attempt_auth_without_username(self):
+        """Attempt authenticated user without req field: username."""
         logger.debug("Start test: test_attempt_auth_without_email.")
         path = BASE_URL + "sign_in"
         param = {"password": USER["password"]}

@@ -7,8 +7,9 @@ from apps.authorization.models.manager import UserManager
 class User(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя."""
 
-    REQUIRED_FIELDS = ["username"]
-    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["email"]
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = "username"
     objects = UserManager()
 
     ##########################################
