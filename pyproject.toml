@@ -53,6 +53,7 @@ line_length = 79
 
 [tool.black]
 line-length = 79
+force-exclude = "settings.py"
 
 [build-system]
 requires = ["poetry-core"]

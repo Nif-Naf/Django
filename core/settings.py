@@ -24,11 +24,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Сторонние модули.
-    "rest_framework",  # REST Framework.
-    "rest_framework_simplejwt",  # REST Framework auth.
-    "drf_yasg",  # Documentation for API.
+    "rest_framework",                               # REST Framework.
+    "rest_framework_simplejwt",                     # REST Framework auth.
+    "drf_yasg",                                     # Documentation for API.
     # Модули приложения.
-    "apps.authorization",  # Custom auth module.
+    "apps.authorization",                           # Custom auth module.
 ]
 
 MIDDLEWARE = [
