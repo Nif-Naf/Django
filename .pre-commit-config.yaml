@@ -30,7 +30,7 @@ repos:
         types: [ python ]
         args: [--settings-path=pyproject.toml]
 
-      # Форматирование кода. Работает.
+      # Форматирование кода.
       - id: black
         name: black
         entry: black
