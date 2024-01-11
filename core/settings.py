@@ -12,8 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOST").split(",")
 
 INSTALLED_APPS = [
     # Встроенные модули Django.
@@ -108,7 +107,7 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_PATH": "/",  # The path of the auth cookie.
     "AUTH_COOKIE_SAME_SITE": "Lax",
 }
-if SIMPLE_JWT['BLACKLIST_AFTER_ROTATION']:
+if SIMPLE_JWT["BLACKLIST_AFTER_ROTATION"]:
     INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")
 
 # Databases settings.
