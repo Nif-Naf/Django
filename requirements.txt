@@ -1,13 +1,30 @@
-asgiref
-Django
-sqlparse
-tzdata
-djangorestframework
-djangorestframework-simplejwt
-pyjwt
-drf-yasg
-celery
-redis
-psycopg2
-requests
-python-dotenv
+amqp==5.1.1 ; python_full_version == "3.11.5"
+asgiref==3.7.2 ; python_full_version == "3.11.5"
+billiard==4.1.0 ; python_full_version == "3.11.5"
+celery==5.3.4 ; python_full_version == "3.11.5"
+click-didyoumean==0.3.0 ; python_full_version == "3.11.5"
+click-plugins==1.1.1 ; python_full_version == "3.11.5"
+click-repl==0.3.0 ; python_full_version == "3.11.5"
+click==8.1.7 ; python_full_version == "3.11.5"
+colorama==0.4.6 ; python_full_version == "3.11.5" and platform_system == "Windows"
+django==4.2.6 ; python_full_version == "3.11.5"
+djangorestframework-simplejwt==5.3.0 ; python_full_version == "3.11.5"
+djangorestframework==3.14.0 ; python_full_version == "3.11.5"
+drf-yasg==1.21.7 ; python_full_version == "3.11.5"
+inflection==0.5.1 ; python_full_version == "3.11.5"
+kombu==5.3.2 ; python_full_version == "3.11.5"
+packaging==23.2 ; python_full_version == "3.11.5"
+prompt-toolkit==3.0.39 ; python_full_version == "3.11.5"
+psycopg2-binary==2.9.9 ; python_full_version == "3.11.5"
+pyjwt==2.8.0 ; python_full_version == "3.11.5"
+python-dateutil==2.8.2 ; python_full_version == "3.11.5"
+python-dotenv==1.0.0 ; python_full_version == "3.11.5"
+pytz==2023.3.post1 ; python_full_version == "3.11.5"
+pyyaml==6.0.1 ; python_full_version == "3.11.5"
+redis==5.0.1 ; python_full_version == "3.11.5"
+six==1.16.0 ; python_full_version == "3.11.5"
+sqlparse==0.4.4 ; python_full_version == "3.11.5"
+tzdata==2023.3 ; python_full_version == "3.11.5"
+uritemplate==4.1.1 ; python_full_version == "3.11.5"
+vine==5.0.0 ; python_full_version == "3.11.5"
+wcwidth==0.2.8 ; python_full_version == "3.11.5"

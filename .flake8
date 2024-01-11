@@ -40,9 +40,6 @@ ignore =
     T003,
     PT009,
     PT027
-exclude =
+extend-exclude =
+    settings.py,
     */migrations/*,
-    __pycache__,
-    .json,
-    .git,
-    .yaml

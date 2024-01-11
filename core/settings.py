@@ -12,8 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOST").split(",")
 
 INSTALLED_APPS = [
     # Встроенные модули Django.
@@ -24,11 +23,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Сторонние модули.
-    "rest_framework",  # REST Framework.
-    "rest_framework_simplejwt",  # REST Framework auth.
-    "drf_yasg",  # Documentation for API.
+    "rest_framework",                               # REST Framework.
+    "rest_framework_simplejwt",                     # REST Framework auth.
+    "drf_yasg",                                     # Documentation for API.
     # Модули приложения.
-    "apps.authorization",  # Custom auth module.
+    "apps.authorization",                           # Custom auth module.
 ]
 
 MIDDLEWARE = [
@@ -108,20 +107,9 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_PATH": "/",  # The path of the auth cookie.
     "AUTH_COOKIE_SAME_SITE": "Lax",
 }
-if SIMPLE_JWT['BLACKLIST_AFTER_ROTATION']:
+if SIMPLE_JWT["BLACKLIST_AFTER_ROTATION"]:
     INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")
 
-# Databases settings.
-LOCAL_TESTING_DATABASE = {  # Local database for testing.
-    "testing": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "testing",
-        "USER": "test",
-        "PASSWORD": "test",
-        "HOST": "postgres_for_tests",
-        "PORT": 5432,
-    },
-}
 PROD_DATABASES = {  # Remote production database.
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -133,19 +121,14 @@ PROD_DATABASES = {  # Remote production database.
     },
 }
 DEVELOPMENT_DATABASES = {  # Remote copy of production database.
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     "NAME": os.getenv("DEVELOPMENT_DATABASE_NAME"),
-    #     "USER": os.getenv("DEVELOPMENT_DATABASE_USER"),
-    #     "PASSWORD": os.getenv("DEVELOPMENT_DATABASE_PASSWORD"),
-    #     "HOST": os.getenv("DEVELOPMENT_DATABASE_HOST"),
-    #     "PORT": int(os.getenv("DEVELOPMENT_DATABASE_PORT")),
-    # },
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DEVELOPMENT_DATABASE_NAME"),
+        "USER": os.getenv("DEVELOPMENT_DATABASE_USER"),
+        "PASSWORD": os.getenv("DEVELOPMENT_DATABASE_PASSWORD"),
+        "HOST": os.getenv("DEVELOPMENT_DATABASE_HOST"),
+        "PORT": int(os.getenv("DEVELOPMENT_DATABASE_PORT")),
     },
-    **LOCAL_TESTING_DATABASE,
 }
 DATABASES = DEVELOPMENT_DATABASES if DEBUG else PROD_DATABASES
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"  # Default pk field type.
