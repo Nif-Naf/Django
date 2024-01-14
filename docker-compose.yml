@@ -29,3 +29,17 @@ services:
       retries: 3
       start_period: 10s
     restart: always
+
+################################################################################
+# Celery workers.
+################################################################################
+  auth_regular_worker:
+    build: .
+    image: auth_regular_worker
+    container_name: auth_regular_worker
+    hostname: auth_regular_worker
+    command: celery -A apps.authorization.workers.regular worker -l info
+    depends_on:
+      django:
+        condition: service_started
+    restart: always
