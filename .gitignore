@@ -167,3 +167,6 @@ uploads
 
 # Migration
 .migrations/
+
+# PostgreSQL
+.postgresql/

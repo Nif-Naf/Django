@@ -19,3 +19,6 @@ README.md
 # Poetry
 poetry.lock
 pyproject.toml
+
+# Postgresql
+.postgresql/
