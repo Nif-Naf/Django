@@ -1,17 +1,20 @@
+# Databases
+.postgresql/
+*.sqlite3
+
 # Environments
-.venv
 env/
 venv/
-ENV/
-env.bak/
-venv.bak/
+
+# Python cache
+__pycache__/
+
+# PyCharm
+.idea/
 
 # Docker
 Dockerfile
 docker-compose.yml
-
-# Python
-__pycache__/
 
 # Readme
 README.md
@@ -19,6 +22,3 @@ README.md
 # Poetry
 poetry.lock
 pyproject.toml
-
-# Postgresql
-.postgresql/
